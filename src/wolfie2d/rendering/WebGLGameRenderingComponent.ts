@@ -9,6 +9,7 @@ export abstract class WebGLGameRenderingComponent {
     protected readonly U_TEX_COORD_FACTOR = "u_TexCoordFactor";
     protected readonly U_TEX_COORD_SHIFT = "u_TexCoordShift";
     protected readonly U_SAMPLER = "u_Sampler";
+    protected readonly U_ROTATION = "u_rotation";
     protected readonly NUM_VERTICES = 4;
     protected readonly FLOATS_PER_VERTEX = 2;
     protected readonly FLOATS_PER_TEXTURE_COORDINATE = 2;

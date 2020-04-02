@@ -24,6 +24,9 @@ export class SceneGraph {
     // THE VIEWPORT IS USED TO FILTER OUT WHAT IS NOT VISIBLE
     private viewport : Viewport;
 
+    // KEEPS TRACK OF PLAYER
+    private player : AnimatedSprite;
+
     public constructor() {
         // DEFAULT CONSTRUCTOR INITIALIZES OUR DATA STRUCTURES
         this.clear();
@@ -86,6 +89,14 @@ export class SceneGraph {
                 return sprite;
         }
         return null;
+    }
+
+    public getPlayer() : AnimatedSprite {
+        return this.player;
+    }
+
+    public setPlayer(player : AnimatedSprite) : void {
+        this.player = player;
     }
 
     /**

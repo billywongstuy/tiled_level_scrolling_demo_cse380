@@ -1,0 +1,13 @@
+{
+    "name":"CAMEL_SPIDER",
+    "spriteSheetImage":"CamelSpider.png",
+    "spriteWidth":128,
+    "spriteHeight":128,
+    "leftBuffer":0,
+    "rightBuffer":0,
+    "topBuffer":0,
+    "bottomBuffer":0,
+    "columns":8,
+    "rows":4,
+    "animations":[{"name":"FORWARD","repeat":true,"frames":[{"index":0,"duration":8}]}]
+}

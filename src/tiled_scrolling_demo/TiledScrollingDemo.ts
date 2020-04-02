@@ -9,6 +9,8 @@ import {TiledLayer} from '../wolfie2d/scene/tiles/TiledLayer'
 import {SceneGraph} from '../wolfie2d/scene/SceneGraph'
 import {Viewport} from '../wolfie2d/scene/Viewport'
 import {TextToRender, TextRenderer} from '../wolfie2d/rendering/TextRenderer'
+import { Behavior1 } from '../wolfie2d/scene/ai/Behavior1'
+import { Behavior2 } from '../wolfie2d/scene/ai/Behavior2'
 
 // THIS IS THE ENTRY POINT INTO OUR APPLICATION, WE MAKE
 // THE Game OBJECT AND INITIALIZE IT WITH THE CANVASES
@@ -28,12 +30,30 @@ game.getResourceManager().loadScene(DESERT_SCENE_PATH,
     let world : TiledLayer[] = game.getSceneGraph().getTiledLayers();
     let worldWidth : number = world[0].getColumns() * world[0].getTileSet().getTileWidth();
     let worldHeight : number = world[0].getRows() * world[0].getTileSet().getTileHeight();
-    for (let i = 0; i < 100; i++) {
-        let type : AnimatedSpriteType = game.getResourceManager().getAnimatedSpriteType("RED_CIRCLE_MAN");
+
+    let type : AnimatedSpriteType = game.getResourceManager().getAnimatedSpriteType("CAMEL_SPIDER");
+    let playerSprite : AnimatedSprite = new AnimatedSprite(type, "FORWARD");
+    playerSprite.getPosition().set(-100, -100, 0, 1); //set out of bounds for now
+    game.getSceneGraph().setPlayer(playerSprite);
+    game.getSceneGraph().addAnimatedSprite(playerSprite);
+
+    for (let i = 0; i < 50; i++) {
+        let type : AnimatedSpriteType = game.getResourceManager().getAnimatedSpriteType("COCKROACH");
         let randomSprite : AnimatedSprite = new AnimatedSprite(type, "FORWARD");
         let randomX : number = Math.random() * worldWidth;
         let randomY : number = Math.random() * worldHeight;
         randomSprite.getPosition().set(randomX, randomY, 0, 1);
+        randomSprite.setBehavior(new Behavior1(game.getSceneGraph(), randomSprite));
+        game.getSceneGraph().addAnimatedSprite(randomSprite);
+    }
+
+    for (let i = 0; i < 50; i++) {
+        let type : AnimatedSpriteType = game.getResourceManager().getAnimatedSpriteType("APHID");
+        let randomSprite : AnimatedSprite = new AnimatedSprite(type, "FORWARD");
+        let randomX : number = Math.random() * worldWidth;
+        let randomY : number = Math.random() * worldHeight;
+        randomSprite.getPosition().set(randomX, randomY, 0, 1);
+        randomSprite.setBehavior(new Behavior2(game.getSceneGraph(), randomSprite, playerSprite));
         game.getSceneGraph().addAnimatedSprite(randomSprite);
     }
 

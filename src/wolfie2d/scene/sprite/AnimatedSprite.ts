@@ -1,12 +1,15 @@
 import {SceneObject} from '../SceneObject'
 import {AnimatedSpriteType} from './AnimatedSpriteType'
+import { Behavior } from '../ai/Behavior';
 
 export class AnimatedSprite extends SceneObject {
     private spriteType : AnimatedSpriteType;
     private state : string;
     private animationFrameIndex : number;
     private frameCounter : number;
-    
+    private direction : number; //0 for up, 1 for left, 2 for down, 3 for right
+    private behavior : Behavior;
+
     public constructor(initSpriteType : AnimatedSpriteType, initState : string) {
         super();
         this.spriteType = initSpriteType;
@@ -15,6 +18,8 @@ export class AnimatedSprite extends SceneObject {
         this.state = initState;
         this.animationFrameIndex = 0;
         this.frameCounter = 0;
+        this.direction = 0;
+        this.behavior = null;
     }
 
     public getAnimationFrameIndex() : number {
@@ -32,16 +37,32 @@ export class AnimatedSprite extends SceneObject {
     public getState() : string {
         return this.state;
     }
+
+    public getDirection() : number {
+        return this.direction;
+    }
     
     public setState(initState : string) : void {
         this.state = initState;
         this.animationFrameIndex = 0;
         this.frameCounter = 0;
     }
+
+    public setDirection(direction : number) : void {
+        this.direction = direction;
+    }
+
+    public setBehavior(behavior : Behavior) : void {
+        this.behavior = behavior;
+    }
     
     public update(delta : number) : void {
         this.frameCounter++;
-        
+
+        if (this.behavior) {
+            this.behavior.takeAction();
+        }
+
         // HAVE WE GONE PAST THE LAST FRAME IN THE ANIMATION?
         var currentAnimation = this.spriteType.getAnimation(this.state);
         var currentFrame = currentAnimation[this.animationFrameIndex];
@@ -86,7 +107,8 @@ export class AnimatedSprite extends SceneObject {
                             +   this.getPosition().getX() + ", " + this.getPosition().getY() + ") "
                             +   "(state: " + this.getState() + ") "
                             +   "(animationFrameIndex: " + this.getAnimationFrameIndex() + ") "
-                            +   "(frameCounter: " + this.getFrameCounter() + ") ";
+                            +   "(frameCounter: " + this.getFrameCounter() + ") "
+                            +   "(direction: " + this.getDirection() + ") ";
         return summary;
     }
 }
