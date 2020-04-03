@@ -4,18 +4,21 @@
 import {AnimatedSprite} from "../scene/sprite/AnimatedSprite"
 import {SceneGraph} from "../scene/SceneGraph"
 import { TiledLayer } from "../scene/tiles/TiledLayer";
+import { ResourceManager } from "../files/ResourceManager";
 
 export class UIController {
     private spriteToDrag : AnimatedSprite;
     private scene : SceneGraph;
     private dragOffsetX : number;
     private dragOffsetY : number;
+    private resourceManager : ResourceManager;
 
-    public constructor(canvasId : string, initScene : SceneGraph) {
+    public constructor(canvasId : string, initScene : SceneGraph, resourceManager : ResourceManager) {
         this.spriteToDrag = null;
         this.scene = initScene;
         this.dragOffsetX = -1;
         this.dragOffsetY = -1;
+        this.resourceManager = resourceManager;
 
         let canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(canvasId);
         canvas.addEventListener("mousedown", this.mouseDownHandler);
@@ -111,6 +114,11 @@ export class UIController {
                 this.scene.getViewport().inc(1, 0);
                 this.scene.getPlayer().getPosition().set(playerX + 1, playerY, 0, 1);
             }
+        }
+
+
+        if (key == "K") {
+            this.scene.debug_kill_type(this.resourceManager.getAnimatedSpriteType("COCKROACH"));
         }
     }
 }

@@ -3,6 +3,7 @@ import {AnimatedSprite} from './sprite/AnimatedSprite'
 import {TiledLayer} from './tiles/TiledLayer'
 import {TileSet} from './tiles/TileSet'
 import {Viewport} from './Viewport';
+import { AnimatedSpriteType } from './sprite/AnimatedSpriteType';
 
 export class SceneGraph {
     // AND ALL OF THE ANIMATED SPRITES, WHICH ARE NOT STORED
@@ -115,7 +116,6 @@ export class SceneGraph {
     }
 
     public movePlayer(delta : number) : void {
-        //move the player
         let x : number = this.player.getPosition().getX();
         let y : number = this.player.getPosition().getY();
         let direction : number = this.player.getDirection();
@@ -135,6 +135,25 @@ export class SceneGraph {
         if (this.playerNotInControlTimer >= 2000) {
             this.playerInControl = true;
             this.playerNotInControlTimer = 0;
+        }
+    }
+
+    public getWinState(type : AnimatedSpriteType) : boolean {
+        for (let i = 0; i < this.animatedSprites.length; i++) {
+            let sprite : AnimatedSprite = this.animatedSprites[i];
+            if (sprite.getSpriteType() == type && sprite.getState() != "DEAD") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public debug_kill_type(type : AnimatedSpriteType) : void {
+        for (let i = 0; i < this.animatedSprites.length; i++) {
+            let sprite : AnimatedSprite = this.animatedSprites[i];
+            if (sprite.getSpriteType() == type) {
+                sprite.setState("DEAD");
+            }
         }
     }
 

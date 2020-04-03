@@ -26,7 +26,7 @@ export class Game extends GameLoopTemplate {
         this.resourceManager= new ResourceManager();
         this.sceneGraph= new SceneGraph();
         this.renderingSystem= new WebGLGameRenderingSystem(gameCanvasId, textCanvasId);
-        this.uiController = new UIController(gameCanvasId, this.sceneGraph);
+        this.uiController = new UIController(gameCanvasId, this.sceneGraph, this.resourceManager);
         this.gamePhysics = new GamePhysics(this.sceneGraph, this.resourceManager);
 
         // MAKE SURE THE SCENE GRAPH' S VIEWPORT IS PROPERLY SETUP
@@ -66,8 +66,10 @@ export class Game extends GameLoopTemplate {
 
         let viewport : Viewport = this.sceneGraph.getViewport();
 
+        let displayWinText : boolean = this.sceneGraph.getWinState(this.resourceManager.getAnimatedSpriteType("COCKROACH"));
+
         // RENDER THE VISIBLE SET, WHICH SHOULD ALL BE RENDERABLE
-        this.renderingSystem.render(viewport, visibleLayers, visibleSprites);
+        this.renderingSystem.render(viewport, visibleLayers, visibleSprites, displayWinText);
     }
 
     /**

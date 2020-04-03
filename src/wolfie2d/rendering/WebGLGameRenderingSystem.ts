@@ -135,7 +135,8 @@ export class WebGLGameRenderingSystem {
 
     public render(  viewport : Viewport,
                     tiledLayers: Array<TiledLayer>,
-                    visibleSprites: Array<AnimatedSprite>): void {
+                    visibleSprites: Array<AnimatedSprite>,
+                    displayWinText : boolean): void {
         // CLEAR THE CANVAS
         this.webGL.clear(this.webGL.COLOR_BUFFER_BIT | this.webGL.DEPTH_BUFFER_BIT);
 
@@ -146,6 +147,6 @@ export class WebGLGameRenderingSystem {
         this.spriteRenderer.render(this.webGL, viewport, visibleSprites);
 
         // THEN THE TEXT ON ANOTHER OVERLAPPING CANVAS
-        this.textRenderer.render();
+        this.textRenderer.render(displayWinText);
     }
 }
