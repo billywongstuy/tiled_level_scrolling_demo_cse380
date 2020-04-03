@@ -3,6 +3,7 @@ import { SceneGraph } from "../SceneGraph";
 import { TiledLayer } from "../tiles/TiledLayer";
 import { Behavior } from "./Behavior";
 
+//Do I want to change it to have other movement?
 export class Behavior1 extends Behavior {
     private framesToChangeDirection : number;
 
@@ -12,6 +13,10 @@ export class Behavior1 extends Behavior {
     }
 
     public takeAction() : void {
+        if (this.getAnimatedSprite().getState() == "DYING" || this.getAnimatedSprite().getState() == "DEAD") {
+            return;
+        }
+
         let x : number = this.getAnimatedSprite().getPosition().getX();
         let y : number = this.getAnimatedSprite().getPosition().getY();
         let direction : number = this.getAnimatedSprite().getDirection();

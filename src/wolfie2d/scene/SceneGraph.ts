@@ -13,7 +13,7 @@ export class SceneGraph {
     // SET OF VISIBLE OBJECTS, NOTE THAT AT THE MOMENT OUR
     // SCENE GRAPH IS QUITE SIMPLE, SO THIS IS THE SAME AS
     // OUR LIST OF ANIMATED SPRITES
-    private visibleSet : Array<SceneObject>;
+    private visibleSet : Array<AnimatedSprite>;
 
     // WE ARE ALSO USING A TILING ENGINE FOR RENDERING OUR LEVEL
     // NOTE THAT WE MANAGE THIS HERE BECAUSE WE MAY INVOLVE THE TILED
@@ -26,6 +26,8 @@ export class SceneGraph {
 
     // KEEPS TRACK OF PLAYER
     private player : AnimatedSprite;
+    private playerInControl : boolean;
+    private playerNotInControlTimer : number;
 
     public constructor() {
         // DEFAULT CONSTRUCTOR INITIALIZES OUR DATA STRUCTURES
@@ -37,6 +39,8 @@ export class SceneGraph {
         this.visibleSet = [];
         this.tiledLayers = [];
         this.tileSets = [];
+        this.playerInControl = true;
+        this.playerNotInControlTimer = 0;
     }
 
     public addTileSet(tileSetToAdd : TileSet) : number {
@@ -99,6 +103,41 @@ export class SceneGraph {
         this.player = player;
     }
 
+    public getIsPlayerInControl() : boolean {
+        return this.playerInControl;
+    }
+
+    public stopPlayerControl() : void {
+        if (this.playerInControl) {
+            this.playerInControl = false;
+            this.player.setDirection((this.player.getDirection() + 2) % 4);
+        }
+    }
+
+    public movePlayer(delta : number) : void {
+        //move the player
+        let x : number = this.player.getPosition().getX();
+        let y : number = this.player.getPosition().getY();
+        let direction : number = this.player.getDirection();
+        let angle : number = ((direction + 1) % 4) / 2 * Math.PI;
+        let newX : number = x + Math.cos(angle);
+        let newY : number = y - Math.sin(angle);
+
+        let world : TiledLayer[] = this.tiledLayers;
+        let worldWidth : number = world[0].getColumns() * world[0].getTileSet().getTileWidth();
+        let worldHeight : number = world[0].getRows() * world[0].getTileSet().getTileHeight();
+
+        if (!(newX < 0 || newX >= worldWidth || newY < 0 || newY >= worldHeight)) {
+            this.player.getPosition().set(newX, newY, 0, 1);
+        }
+
+        this.playerNotInControlTimer += delta;
+        if (this.playerNotInControlTimer >= 2000) {
+            this.playerInControl = true;
+            this.playerNotInControlTimer = 0;
+        }
+    }
+
     /**
      * update
      * 
@@ -114,7 +153,7 @@ export class SceneGraph {
         }
     }
 
-    public scope() : Array<SceneObject> {
+    public scope() : Array<AnimatedSprite> {
         // CLEAR OUT THE OLD
         this.visibleSet = [];
 

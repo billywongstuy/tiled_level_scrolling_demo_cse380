@@ -25,6 +25,7 @@ export class UIController {
     }
 
     public mouseDownHandler = (event : MouseEvent) : void => {
+        /*
         let mousePressX : number = event.clientX;
         let mousePressY : number = event.clientY;
         let sprite : AnimatedSprite = this.scene.getSpriteAt(mousePressX, mousePressY);
@@ -37,17 +38,20 @@ export class UIController {
             this.dragOffsetX = sprite.getPosition().getX() - mousePressX;
             this.dragOffsetY = sprite.getPosition().getY() - mousePressY;
         }
+        */
     }
     
     public mouseMoveHandler = (event : MouseEvent) : void => {
+        /*
         if (this.spriteToDrag != null) {
             this.spriteToDrag.getPosition().set(event.clientX + this.dragOffsetX, 
                                                 event.clientY + this.dragOffsetY, 
                                                 this.spriteToDrag.getPosition().getZ(), 
                                                 this.spriteToDrag.getPosition().getW());
         }
+        */
 
-        if (this.scene.getPlayer()) {
+        if (this.scene.getPlayer() && this.scene.getIsPlayerInControl()) {
             let mouseX : number = event.clientX;
             let mouseY : number = event.clientY;
             let worldX : number = this.scene.getViewport().getX() + mouseX - 64;
@@ -67,7 +71,7 @@ export class UIController {
     }
 
     public mouseUpHandler = (event : MouseEvent) : void => {
-        this.spriteToDrag = null;
+        //this.spriteToDrag = null;
     }
 
     public keyDownHandler = (event : KeyboardEvent) : void => {
@@ -79,8 +83,6 @@ export class UIController {
 
         let playerX = this.scene.getPlayer().getPosition().getX();
         let playerY = this.scene.getPlayer().getPosition().getY();
-
-        //adjust to handle the player
 
         if (key == 'W') {
             //console.log("up");

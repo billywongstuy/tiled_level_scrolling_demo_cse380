@@ -70,6 +70,9 @@ export class AnimatedSprite extends SceneObject {
             this.animationFrameIndex++;
             if (this.animationFrameIndex >= currentAnimation.length) {
                 this.animationFrameIndex = 0;
+                if (this.state == "DYING") {
+                    this.state = "DEAD";
+                }
             }
             this.frameCounter = 0;
         }
